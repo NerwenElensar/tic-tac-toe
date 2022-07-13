@@ -1,0 +1,46 @@
+
+*{
+    margin: 0;
+}
+
+header {
+    background-color: rgb(237, 133, 168);
+    padding: 32px;
+    text-align: center;
+}
+
+h1 {
+    color: purple;
+    font-size: 5rem;
+    font-family: 'Rubik Puddles', cursive;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main#gameboard {
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    grid-template-columns: repeat(3, 150px);
+    padding: 5%;
+}
+
+.game-cell {
+    width: 150px;
+    height: 150px;
+    border-right: 5px dashed purple;
+    border-bottom: 5px dashed palevioletred;
+}
+
+.no-bot-border {
+    border-bottom: none;
+}
+
+
+.no-r-border {
+    border-right: none;
+}
+

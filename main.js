@@ -19,9 +19,9 @@ const gameboard = (() => {
       // get html div that correlates with the index
       const boardCell = document.querySelector(`[data-index="${i}"]`);
       if (board[i] == "O") {
-        boardCell.textContent = "O";
+        boardCell.classList.add("occupied", "o");
       } else if (board[i] == "X") {
-        boardCell.textContent = "X";
+        boardCell.classList.add("occupied", "x");
       }
     }
   };

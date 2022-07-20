@@ -44,3 +44,17 @@ main#gameboard {
     border-right: none;
 }
 
+.occupied {
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.o {
+    background-image: url(0.png);
+}
+
+.x {
+    background-image: url(x.png);
+
+}
+

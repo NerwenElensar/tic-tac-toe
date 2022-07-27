@@ -25,10 +25,8 @@ const gameboard = (() => {
     for (let i = 0; i < board.length; i++) {
       const boardCell = document.querySelector(`[data-index="${i}"]`);
       if (board[i] == "O") {
-        console.log("hello I am OOOOO");
         boardCell.classList.add("occupied", "o");
       } else if (board[i] == "X") {
-        console.log("booh");
         boardCell.classList.add("occupied", "x");
       }
     }
@@ -38,12 +36,9 @@ const gameboard = (() => {
 })();
 
 const gameController = (() => {
-  //toggle whose turn it is after each token was set
   let currentPlayer = player1;
   const switchToNextPlayer = () => {
-    console.log("switchfrom" + currentPlayer.name);
     currentPlayer = currentPlayer == player1 ? player2 : player1;
-    console.log("switchto" + currentPlayer.name);
   };
   const gameCellsHTMLElems = document.querySelectorAll(".game-cell");
   Array.from(gameCellsHTMLElems).forEach((gameCell) => {

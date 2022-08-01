@@ -5,6 +5,7 @@ const Player = (name, token) => {
     const index = event.target.dataset.index;
     if (!event.target.classList.contains("occupied")) {
       gameboard.board.splice(index, 1, token);
+      gameController.checkGameIsOver();
       gameController.switchToNextPlayer();
     }
     gameboard.renderGameboard();
@@ -32,7 +33,26 @@ const gameboard = (() => {
     }
   };
 
-  return { board, renderGameboard };
+  const hasSameToken = (x, y, z) => {
+    if (board[x] == "" || board[y] == "" || board[z] == "") {
+      return false;
+    }
+    return board[x] == board[y] && board[y] == board[z];
+  };
+
+  const threeInARow = () => {
+    return hasSameToken(0, 1, 2) || hasSameToken(3, 4, 5) || hasSameToken(6, 7, 8);
+  };
+
+  const threeInACol = () => {
+    return hasSameToken(0, 3, 6) || hasSameToken(1, 4, 7) || hasSameToken(2, 5, 8);
+  };
+
+  const threeInADiag = () => {
+    return hasSameToken(0, 4, 8) || hasSameToken(2, 4, 6);
+  };
+
+  return { board, renderGameboard, threeInARow, threeInACol, threeInADiag };
 })();
 
 const gameController = (() => {
@@ -40,6 +60,24 @@ const gameController = (() => {
   const switchToNextPlayer = () => {
     currentPlayer = currentPlayer == player1 ? player2 : player1;
   };
+
+  // Things to consider: Where do I check that the game is over? How do I implement game loop? setToken in Player does way more than setting only the token.
+  const checkGameIsOver = () => {
+    if (gameboard.threeInARow() || gameboard.threeInACol() || gameboard.threeInADiag()) {
+      console.log("row" + gameboard.threeInARow());
+      console.log("col" + gameboard.threeInACol());
+      console.log("diag" + gameboard.threeInADiag());
+
+      console.log("the winner is: " + currentPlayer.name);
+      //check who is winner -> should be currentPlayer if player is not swapped yet
+      //stop game, disable game fields
+      gameboard.disableBoard();
+      //announce winner
+      announceWinner();
+    }
+    //else if (allFieldsOcc()) {}
+  };
+
   const gameCellsHTMLElems = document.querySelectorAll(".game-cell");
   Array.from(gameCellsHTMLElems).forEach((gameCell) => {
     gameCell.addEventListener("click", function (e) {
@@ -47,5 +85,5 @@ const gameController = (() => {
     });
   });
 
-  return { switchToNextPlayer };
+  return { switchToNextPlayer, checkGameIsOver };
 })();

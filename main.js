@@ -84,19 +84,22 @@ const gameController = (() => {
       console.log("col" + gameboard.threeInACol());
       console.log("diag" + gameboard.threeInADiag());
       console.log("the winner is: " + currentPlayer.name);
-      console.log(gameOver);
-      //set game to gameOver
-      gameOver = true;
+      setGameOverStatus(true);
 
-      console.log(gameOver);
       //announce winner
-      //announceWinner();
+      //TODO: announce(currentPlayer.name);
+    } else if (gameboard.allFieldsOcc()) {
+      setGameOverStatus(true);
+      //TODO: announce("tie");
     }
-    //else if (allFieldsOcc()) {}
   };
 
   const getGameOverStatus = () => {
     return gameOver;
+  };
+
+  const setGameOverStatus = (status) => {
+    gameOver = status;
   };
 
   const gameCellsHTMLElems = document.querySelectorAll(".game-cell");

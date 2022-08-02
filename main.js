@@ -3,8 +3,12 @@
 const Player = (name, token) => {
   const setToken = function (event) {
     const index = event.target.dataset.index;
-    if (!event.target.classList.contains("occupied")) {
+    if (
+      !event.target.classList.contains("occupied") &&
+      gameController.getGameOverStatus() == false
+    ) {
       gameboard.board.splice(index, 1, token);
+      gameboard.renderGameboard();
       gameController.checkGameIsOver();
       gameController.switchToNextPlayer();
     }
@@ -52,11 +56,23 @@ const gameboard = (() => {
     return hasSameToken(0, 4, 8) || hasSameToken(2, 4, 6);
   };
 
-  return { board, renderGameboard, threeInARow, threeInACol, threeInADiag };
+  const disableBoard = () => {
+    const gameCellsHTMLElems = document.querySelectorAll(".game-cell");
+    Array.from(gameCellsHTMLElems).forEach((gameCell) => {
+      console.log("is this happening ?");
+      gameCell.addEventListener("click", function (e) {
+        e.preventDefault();
+      });
+    });
+  };
+
+  return { board, renderGameboard, threeInARow, threeInACol, threeInADiag, disableBoard };
 })();
 
 const gameController = (() => {
+  let gameOver = false;
   let currentPlayer = player1;
+
   const switchToNextPlayer = () => {
     currentPlayer = currentPlayer == player1 ? player2 : player1;
   };
@@ -67,23 +83,29 @@ const gameController = (() => {
       console.log("row" + gameboard.threeInARow());
       console.log("col" + gameboard.threeInACol());
       console.log("diag" + gameboard.threeInADiag());
-
       console.log("the winner is: " + currentPlayer.name);
-      //check who is winner -> should be currentPlayer if player is not swapped yet
-      //stop game, disable game fields
-      gameboard.disableBoard();
+      console.log(gameOver);
+      //set game to gameOver
+      gameOver = true;
+
+      console.log(gameOver);
       //announce winner
-      announceWinner();
+      //announceWinner();
     }
     //else if (allFieldsOcc()) {}
   };
 
+  const getGameOverStatus = () => {
+    return gameOver;
+  };
+
   const gameCellsHTMLElems = document.querySelectorAll(".game-cell");
   Array.from(gameCellsHTMLElems).forEach((gameCell) => {
+    console.log("how often do I add eventlisteners?");
     gameCell.addEventListener("click", function (e) {
       currentPlayer.setToken(e);
     });
   });
 
-  return { switchToNextPlayer, checkGameIsOver };
+  return { switchToNextPlayer, checkGameIsOver, getGameOverStatus };
 })();

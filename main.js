@@ -56,17 +56,15 @@ const gameboard = (() => {
     return hasSameToken(0, 4, 8) || hasSameToken(2, 4, 6);
   };
 
-  const disableBoard = () => {
+  const allFieldsOcc = () => {
     const gameCellsHTMLElems = document.querySelectorAll(".game-cell");
-    Array.from(gameCellsHTMLElems).forEach((gameCell) => {
-      console.log("is this happening ?");
-      gameCell.addEventListener("click", function (e) {
-        e.preventDefault();
-      });
+    const allOcc = Array.from(gameCellsHTMLElems).every((gameCell) => {
+      return gameCell.classList.contains("occupied");
     });
+    return allOcc;
   };
 
-  return { board, renderGameboard, threeInARow, threeInACol, threeInADiag, disableBoard };
+  return { board, renderGameboard, threeInARow, threeInACol, threeInADiag, allFieldsOcc };
 })();
 
 const gameController = (() => {

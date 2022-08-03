@@ -18,8 +18,8 @@ const Player = (name, token) => {
 };
 
 // create two players
-const player1 = Player("player1", "X");
-const player2 = Player("player2", "O");
+const player1 = Player("Player1", "X");
+const player2 = Player("Player2", "O");
 
 // Module pattern for gameboard and Controller
 
@@ -75,21 +75,21 @@ const gameController = (() => {
     currentPlayer = currentPlayer == player1 ? player2 : player1;
   };
 
-  // Things to consider: Where do I check that the game is over? How do I implement game loop? setToken in Player does way more than setting only the token.
   const checkGameIsOver = () => {
     if (gameboard.threeInARow() || gameboard.threeInACol() || gameboard.threeInADiag()) {
-      console.log("row" + gameboard.threeInARow());
-      console.log("col" + gameboard.threeInACol());
-      console.log("diag" + gameboard.threeInADiag());
-      console.log("the winner is: " + currentPlayer.name);
       setGameOverStatus(true);
-
-      //announce winner
-      //TODO: announce(currentPlayer.name);
+      announce(currentPlayer.name);
     } else if (gameboard.allFieldsOcc()) {
       setGameOverStatus(true);
-      //TODO: announce("tie");
+      announce("tie");
     }
+  };
+
+  const announce = (winner) => {
+    const announceDiv = document.querySelector(".announcement");
+
+    const announceText = winner === "tie" ? "This is a tie!" : `${winner} has won!`;
+    announceDiv.textContent = announceText;
   };
 
   const getGameOverStatus = () => {

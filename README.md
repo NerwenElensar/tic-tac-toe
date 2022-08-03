@@ -9,3 +9,6 @@ Icons used:
 ### Learning Outcome
 - Practice the Factory and Module pattern with JS
   - When and how to use them
+  - Structuring Code
+- Scope and Closure in JS
+- Immediately Invoked Function Expressions (IIFE)

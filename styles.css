@@ -25,7 +25,26 @@ main#gameboard {
     justify-self: center;
     display: grid;
     grid-template-columns: repeat(3, 150px);
-    padding: 5%;
+    padding: 2%;
+}
+
+.announcement {
+    align-self: center;
+    font-weight: 600;
+    font-size: 2rem;
+    font-family: 'Syne Mono', monospace;
+    height: 1.5rem;
+    width: 20%;
+    text-align: center;
+    padding: 2.5rem;
+}
+
+.gradient-text {
+    background: linear-gradient(to bottom, purple, rgb(252, 195, 214)
+    );
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 .game-cell {

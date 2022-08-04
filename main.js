@@ -24,7 +24,7 @@ const player2 = Player("Player2", "O");
 // Module pattern for gameboard and Controller
 
 const gameboard = (() => {
-  const board = ["", "", "", "", "", "", "", "", ""];
+  let board = ["", "", "", "", "", "", "", "", ""];
 
   const renderGameboard = () => {
     for (let i = 0; i < board.length; i++) {
@@ -35,6 +35,12 @@ const gameboard = (() => {
         boardCell.classList.add("occupied", "x");
       }
     }
+  };
+
+  resetGameboard = () => {
+    board.splice(0, board.length);
+    board.length = 9;
+    board.fill("");
   };
 
   const hasSameToken = (x, y, z) => {
@@ -64,7 +70,15 @@ const gameboard = (() => {
     return allOcc;
   };
 
-  return { board, renderGameboard, threeInARow, threeInACol, threeInADiag, allFieldsOcc };
+  return {
+    board,
+    renderGameboard,
+    threeInARow,
+    threeInACol,
+    threeInADiag,
+    allFieldsOcc,
+    resetGameboard,
+  };
 })();
 
 const gameController = (() => {
@@ -78,18 +92,47 @@ const gameController = (() => {
   const checkGameIsOver = () => {
     if (gameboard.threeInARow() || gameboard.threeInACol() || gameboard.threeInADiag()) {
       setGameOverStatus(true);
-      announce(currentPlayer.name);
+      announceAndAddRestartButton(currentPlayer.name);
     } else if (gameboard.allFieldsOcc()) {
       setGameOverStatus(true);
-      announce("tie");
+      announceAndAddRestartButton("tie");
     }
   };
 
-  const announce = (winner) => {
-    const announceDiv = document.querySelector(".announcement");
-
+  const announceDiv = document.querySelector(".announcement");
+  const announceAndAddRestartButton = (winner) => {
     const announceText = winner === "tie" ? "This is a tie!" : `${winner} has won!`;
     announceDiv.textContent = announceText;
+    addRestartButton();
+  };
+
+  const buttonDiv = document.querySelector(".restart-btn");
+  const addRestartButton = () => {
+    const button = document.createElement("button");
+    button.textContent = "Restart Game";
+    buttonDiv.appendChild(button);
+  };
+
+  const removeRestartButton = () => {
+    buttonDiv.removeChild(document.querySelector("button"));
+  };
+
+  const restartGame = () => {
+    gameCellsHTMLElems.forEach((gameCell) => {
+      removeHtmlClass(gameCell, "occupied");
+      removeHtmlClass(gameCell, "o");
+      removeHtmlClass(gameCell, "x");
+    });
+    gameboard.resetGameboard();
+    gameOver = false;
+    announceDiv.textContent = "";
+    removeRestartButton();
+  };
+
+  const removeHtmlClass = (elem, className) => {
+    if (elem.classList.contains(className)) {
+      elem.classList.remove(className);
+    }
   };
 
   const getGameOverStatus = () => {
@@ -108,5 +151,8 @@ const gameController = (() => {
     });
   });
 
-  return { switchToNextPlayer, checkGameIsOver, getGameOverStatus };
+  const restartButton = document.querySelector(".restart-btn");
+  restartButton.addEventListener("click", restartGame);
+
+  return { switchToNextPlayer, checkGameIsOver, getGameOverStatus, restartGame };
 })();

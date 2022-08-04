@@ -34,9 +34,8 @@ main#gameboard {
     font-size: 2rem;
     font-family: 'Syne Mono', monospace;
     height: 1.5rem;
-    width: 20%;
     text-align: center;
-    padding: 2.5rem;
+    padding: 2rem;
 }
 
 .gradient-text {
@@ -45,6 +44,25 @@ main#gameboard {
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
+}
+
+.restart-btn {
+    height: 50px;
+    text-align: center;
+}
+
+button {
+    border: none;
+    border-radius: 6px;
+    background-color: rgb(252, 195, 214);
+    color: purple;
+    font-family: "Syne Mono", monospace;
+    font-weight: bold;
+    padding: 12px 8px;
+}
+
+button:hover {
+    background-color: rgb(237, 133, 168);
 }
 
 .game-cell {

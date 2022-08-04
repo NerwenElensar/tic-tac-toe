@@ -7,7 +7,7 @@ const Player = (name, token) => {
       !event.target.classList.contains("occupied") &&
       gameController.getGameOverStatus() == false
     ) {
-      gameboard.board.splice(index, 1, token);
+      gameboard.addToken(index, token);
       gameboard.renderGameboard();
       gameController.checkGameIsOver();
       gameController.switchToNextPlayer();
@@ -22,7 +22,6 @@ const player1 = Player("Player1", "X");
 const player2 = Player("Player2", "O");
 
 // Module pattern for gameboard and Controller
-
 const gameboard = (() => {
   let board = ["", "", "", "", "", "", "", "", ""];
 
@@ -37,10 +36,14 @@ const gameboard = (() => {
     }
   };
 
-  resetGameboard = () => {
+  const resetGameboard = () => {
     board.splice(0, board.length);
     board.length = 9;
     board.fill("");
+  };
+
+  const addToken = (index, token) => {
+    board.splice(index, 1, token);
   };
 
   const hasSameToken = (x, y, z) => {
@@ -71,7 +74,7 @@ const gameboard = (() => {
   };
 
   return {
-    board,
+    addToken,
     renderGameboard,
     threeInARow,
     threeInACol,

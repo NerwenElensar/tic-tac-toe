@@ -1,6 +1,10 @@
 // Factory function for Players
 
 const Player = (name, token) => {
+  const getName = () => {
+    return name;
+  };
+
   const setToken = function (event) {
     const index = event.target.dataset.index;
     if (
@@ -14,7 +18,7 @@ const Player = (name, token) => {
     }
     gameboard.renderGameboard();
   };
-  return { name, token, setToken };
+  return { getName, setToken };
 };
 
 // create two players
@@ -87,29 +91,33 @@ const gameboard = (() => {
 const gameController = (() => {
   let gameOver = false;
   let currentPlayer = player1;
+  const announceDiv = document.querySelector(".announcement");
+  const buttonDiv = document.querySelector(".restart-btn");
 
   const switchToNextPlayer = () => {
     currentPlayer = currentPlayer == player1 ? player2 : player1;
   };
 
   const checkGameIsOver = () => {
-    if (gameboard.threeInARow() || gameboard.threeInACol() || gameboard.threeInADiag()) {
+    if (
+      gameboard.threeInARow() ||
+      gameboard.threeInACol() ||
+      gameboard.threeInADiag() ||
+      gameboard.allFieldsOcc()
+    ) {
       setGameOverStatus(true);
-      announceAndAddRestartButton(currentPlayer.name);
-    } else if (gameboard.allFieldsOcc()) {
-      setGameOverStatus(true);
-      announceAndAddRestartButton("tie");
+      gameboard.allFieldsOcc()
+        ? announceAndAddRestartButton("tie")
+        : announceAndAddRestartButton(currentPlayer.getName());
     }
   };
 
-  const announceDiv = document.querySelector(".announcement");
   const announceAndAddRestartButton = (winner) => {
     const announceText = winner === "tie" ? "This is a tie!" : `${winner} has won!`;
     announceDiv.textContent = announceText;
     addRestartButton();
   };
 
-  const buttonDiv = document.querySelector(".restart-btn");
   const addRestartButton = () => {
     const button = document.createElement("button");
     button.textContent = "Restart Game";
@@ -148,14 +156,12 @@ const gameController = (() => {
 
   const gameCellsHTMLElems = document.querySelectorAll(".game-cell");
   Array.from(gameCellsHTMLElems).forEach((gameCell) => {
-    console.log("how often do I add eventlisteners?");
     gameCell.addEventListener("click", function (e) {
       currentPlayer.setToken(e);
     });
   });
 
-  const restartButton = document.querySelector(".restart-btn");
-  restartButton.addEventListener("click", restartGame);
+  buttonDiv.addEventListener("click", restartGame);
 
   return { switchToNextPlayer, checkGameIsOver, getGameOverStatus, restartGame };
 })();
